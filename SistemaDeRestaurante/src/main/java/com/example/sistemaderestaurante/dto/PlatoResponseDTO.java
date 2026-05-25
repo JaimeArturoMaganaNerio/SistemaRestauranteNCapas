@@ -18,7 +18,7 @@ public class PlatoResponseDTO {
     private String estado;
 
 
-    // Convertir Entity → DTO (método estático)
+    // Convertir Entity → DTO metodo estatico
     public static PlatoResponseDTO fromEntity(PlatoEntidad plato) {
         return new PlatoResponseDTO(
                 plato.getId(),

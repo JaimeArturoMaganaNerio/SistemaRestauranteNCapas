@@ -30,14 +30,14 @@ public class PlatoService {
         PlatoEntidad platoGuardado = platoRepository.save(plato);
 
         // Convertir Entidad → ResponseDTO y retornar
-        return convertToResponseDTO(platoGuardado);
+        return PlatoResponseDTO.fromEntity(platoGuardado);
     }
 
     // 2. OBTENER todos los platos
     public List<PlatoResponseDTO> obtenerPlatos() {
         return platoRepository.findAll()
                 .stream()
-                .map(this::convertToResponseDTO)
+                .map(PlatoResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +45,7 @@ public class PlatoService {
     public PlatoResponseDTO obtenerPlatoPorId(Long id) {
         PlatoEntidad plato = platoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plato no encontrado con ID: " + id));
-        return convertToResponseDTO(plato);
+        return PlatoResponseDTO.fromEntity(plato);
     }
 
     // 4. ACTUALIZAR plato
@@ -62,7 +62,7 @@ public class PlatoService {
         // Guardar cambios
         PlatoEntidad platoActualizado = platoRepository.save(platoExistente);
 
-        return convertToResponseDTO(platoActualizado);
+        return PlatoResponseDTO.fromEntity(platoActualizado);
     }
 
     // 5. ELIMINAR plato
@@ -75,14 +75,5 @@ public class PlatoService {
         platoRepository.delete(plato);
     }
 
-    // ========== MÉTODO PRIVADO PARA CONVERTIR ENTIDAD → DTO ==========
-    private PlatoResponseDTO convertToResponseDTO(PlatoEntidad plato) {
-        PlatoResponseDTO responseDTO = new PlatoResponseDTO();
-        responseDTO.setId(plato.getId());
-        responseDTO.setNombre(plato.getNombre());
-        responseDTO.setDescripcion(plato.getDescripcion());
-        responseDTO.setPrecio(plato.getPrecio());
-        responseDTO.setEstado(plato.getActivo() ? "Disponible" : "No disponible");
-        return responseDTO;
-    }
+
 }
